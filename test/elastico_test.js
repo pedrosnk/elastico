@@ -9,7 +9,6 @@ describe('Elastico', function(){
         done();
       });
     });
-    
   });
 
   it('should get an object of the elastic search', function(done){
@@ -38,7 +37,7 @@ describe('Elastico', function(){
   });
 
   it('should insert an data into the elastic search with an pre existing id', function(done){
-    elastic_search.insertWithId("test","ids", "zomgid" , '{"key", "value"}', function(created){
+    elastic_search.insertWithId("test","ids", "zomgid" , '{"key": "value"}', function(created){
       created.should.be.true;
          done();
     });
@@ -60,6 +59,12 @@ describe('Elastico', function(){
         removed.should.be.true;
         done();
       });      
+    });
+  });
+
+  after(function(done){
+    elastic_search.removeIndex('test', function(removed){
+      done();
     });
   });
 
