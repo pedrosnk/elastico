@@ -4,6 +4,22 @@ ELASTICO
 Elastico is an API to easialy connect a node application with
 elastic search.
 
+USAGE
+-----
+Install it
+
+    npm install elastico
+
+Use on your projects
+
+```js
+var Elastico = require('elastico').Elastico;
+var client = new Elastico();
+client.getIndex('my_index','my_type', 'my_key', function(data){
+  console.log(data);
+};
+```
+
 REFERENCE
 ---------
 
