@@ -1,0 +1,236 @@
+<!DOCTYPE html>  <html> <head>   <title>elastico.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               elastico.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <h2>Elastico.js 0.0.1</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Elastico may be distrubited under MIT license </p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Requores http dependecy to make request to elasticsearch</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Declaration of Class Elastic Search</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">Elastico</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>This are the custom options that
+can be used to configure the connection with
+the elasticsearch client.</p>
+
+<pre><code>var client = new Elastico();
+client.options.host = 'my_elastic_search_ip';
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">host</span><span class="o">:</span> <span class="s1">&#39;localhost&#39;</span>
+   <span class="p">,</span><span class="nx">port</span><span class="o">:</span> <span class="mi">9200</span>
+   <span class="p">,</span><span class="nx">protocol</span><span class="o">:</span> <span class="s2">&quot;http&quot;</span>
+  <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="nx">Elastico</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Function used to generate get an index from the
+elasticsearch client it will return the raw json from the
+elasticsearch.</p>
+
+<pre><code>client.getIndex('my_index','my_type', 'my_key', function(data){
+  console.log(data);
+});
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">getIndex</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">callback</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">request</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">protocol</span> <span class="o">+</span> <span class="s2">&quot;://&quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">host</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">port</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">index</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">type</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">key</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">jsonData</span>  <span class="o">=</span> <span class="p">[];</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">chucked</span><span class="p">){</span>
+        <span class="nx">jsonData</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">chucked</span><span class="p">);</span>
+      <span class="p">});</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">jsonData</span> <span class="o">=</span> <span class="nx">jsonData</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+        <span class="nx">callback</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">jsonData</span><span class="p">));</span>
+      <span class="p">});</span>
+    <span class="p">});</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">method</span> <span class="o">=</span> <span class="s1">&#39;GET&#39;</span><span class="p">;</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+  <span class="p">},</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>Used to get all the data from an expecific index and type
+returning the raw json from elastic search it is possible
+to pass some options at the body of the request. sse more
+at <a href="http://www.elasticsearch.org/guide">elasticsearch docs</a></p>
+
+<pre><code>client.getAll('my_index', 'my_type', function(data){
+  console.log(data);
+});
+</code></pre>
+
+<p>with options</p>
+
+<pre><code>client.getAll('my_index', 'my_type', function(data){
+  console.log(data);
+}, {size: 30} );
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">getAll</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">callback</span><span class="p">,</span> <span class="nx">extras</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">body</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">extras</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nx">host</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">host</span><span class="p">,</span>
+      <span class="nx">port</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">port</span><span class="p">,</span>
+      <span class="nx">path</span><span class="o">:</span> <span class="nx">index</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">type</span> <span class="o">+</span> <span class="s2">&quot;/_search&quot;</span><span class="p">,</span>
+      <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+      <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
+      <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">request</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">jsonData</span>  <span class="o">=</span> <span class="p">[];</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">chucked</span><span class="p">){</span>
+        <span class="nx">jsonData</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">chucked</span><span class="p">);</span>
+      <span class="p">});</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">jsonData</span> <span class="o">=</span> <span class="nx">jsonData</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+        <span class="nx">callback</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">jsonData</span><span class="p">));</span>
+      <span class="p">});</span>
+    <span class="p">});</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="nx">body</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">){</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">,</span> <span class="nx">body</span><span class="p">.</span><span class="nx">length</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="p">);</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">extras</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>Responsable to insert some object data into the
+elasticsearch client. the data must be passad as
+string. recommended to use JSON.stringfy(value)
+it will let elasticsearch to auto generate an id for
+the object</p>
+
+<pre><code>var obj = {foo: "bar" };
+client.insert('my_index','my_type',JSON.strinfy(obj), function(success) {
+  if (success === true){
+    console.log('success')
+  } else {}
+    console.log('some error occoured');
+  }
+});
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">insert</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nx">host</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">host</span><span class="p">,</span>
+      <span class="nx">port</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">port</span><span class="p">,</span>
+      <span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">index</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">type</span><span class="p">,</span>
+      <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+      <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">request</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">callback</span> <span class="o">!=</span> <span class="kc">undefined</span><span class="p">){</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">&lt;</span> <span class="mi">300</span> <span class="o">&amp;&amp;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">&gt;=</span> <span class="mi">200</span><span class="p">){</span>
+          <span class="nx">callback</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span><span class="p">{</span>
+          <span class="nx">callback</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>Does the same job as the insert function, but
+it is possible to pass an id predetermined to the elasticsearch
+it is useful in case you need to overwrite a data into elasticsearch</p>
+
+<pre><code>var obj = {foo: "bar" };
+client.insertWithId('my_index','my_type','my_id',JSON.strinfy(obj), function(success) {
+  if (success === true){
+    console.log('success')
+  } else {}
+    console.log('some error occoured');
+  }
+});
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">insertWithId</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nx">host</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">host</span><span class="p">,</span>
+      <span class="nx">port</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">port</span><span class="p">,</span>
+      <span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">index</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">type</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">id</span><span class="p">,</span>
+      <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;PUT&#39;</span><span class="p">,</span>
+      <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span>
+      <span class="p">}</span>
+    <span class="p">};</span>
+    <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">request</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">callback</span> <span class="o">!=</span> <span class="kc">undefined</span><span class="p">){</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">&lt;</span> <span class="mi">300</span> <span class="o">&amp;&amp;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">&gt;=</span> <span class="mi">200</span><span class="p">){</span>
+          <span class="nx">callback</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span><span class="p">{</span>
+          <span class="nx">callback</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+
+    <span class="nx">req</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>Useful to remove some data by passing it id into elasticsearch</p>
+
+<pre><code>client.remove('my_index','my_type','my_id', function(success) {
+  console.log("removed? - " + success);
+});
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">remove</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nx">host</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">host</span><span class="p">,</span>
+      <span class="nx">port</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">port</span><span class="p">,</span>
+      <span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">index</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">type</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">id</span><span class="p">,</span>
+      <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;DELETE&#39;</span><span class="p">,</span>
+      <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span>
+      <span class="p">}</span>
+    <span class="p">};</span>
+    <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">request</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">callback</span> <span class="o">!=</span> <span class="kc">undefined</span><span class="p">){</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">&lt;</span> <span class="mi">300</span> <span class="o">&amp;&amp;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">&gt;=</span> <span class="mi">200</span><span class="p">){</span>
+          <span class="nx">callback</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span><span class="p">{</span>
+          <span class="nx">callback</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+  <span class="p">},</span>
+
+  <span class="nx">createIndex</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">callback</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nx">host</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">host</span><span class="p">,</span>
+      <span class="nx">port</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">port</span><span class="p">,</span>
+      <span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">index</span><span class="p">,</span>
+      <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;POST&#39;</span>
+    <span class="p">}</span>
+    <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">request</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">callback</span> <span class="o">!=</span> <span class="kc">undefined</span><span class="p">){</span>
+        <span class="nx">callback</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">&lt;</span> <span class="mi">300</span> <span class="o">&amp;&amp;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">&gt;=</span> <span class="mi">200</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+  <span class="p">},</span>
+
+  <span class="nx">removeIndex</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">callback</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nx">host</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">host</span><span class="p">,</span>
+      <span class="nx">port</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">port</span><span class="p">,</span>
+      <span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">index</span><span class="p">,</span>
+      <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;DELETE&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">request</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">callback</span> <span class="o">!=</span> <span class="kc">undefined</span><span class="p">){</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">&lt;</span> <span class="mi">300</span> <span class="o">&amp;&amp;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">&gt;=</span> <span class="mi">200</span><span class="p">){</span>
+          <span class="nx">callback</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span><span class="p">{</span>
+          <span class="nx">callback</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+  <span class="p">},</span>
+  
+  <span class="nx">bulk</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">values</span><span class="p">,</span> <span class="nx">callback</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">host</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">host</span><span class="p">,</span>
+        <span class="nx">port</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">port</span><span class="p">,</span>
+        <span class="nx">path</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">index</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">type</span> <span class="o">+</span> <span class="s2">&quot;/_bulk&quot;</span><span class="p">,</span>
+        <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+        <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
+          <span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span>
+        <span class="p">}</span>
+      <span class="p">};</span>
+      <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">request</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">callback</span> <span class="o">!=</span> <span class="kc">undefined</span><span class="p">){</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">&lt;</span> <span class="mi">300</span> <span class="o">&amp;&amp;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">&gt;=</span> <span class="mi">200</span><span class="p">){</span>
+            <span class="nx">callback</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+          <span class="p">}</span> <span class="k">else</span><span class="p">{</span>
+            <span class="nx">callback</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">});</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">values</span><span class="p">);</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+  <span class="p">}</span>
+
+<span class="p">};</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">Elastico</span> <span class="o">=</span> <span class="nx">Elastico</span><span class="p">;</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
